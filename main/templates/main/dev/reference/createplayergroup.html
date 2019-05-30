@@ -1,0 +1,40 @@
+<h2>createplayergroup/</h2>
+<p>Creates a new player group within the given match. Returns a JSON representation of the match. The request must contain
+    POST fields gameKey, matchKey and groupName. A matchKey is obtained from startmatch/. The match cannot contain a
+    player group with the given group name.</p>
+<h3>Example</h3>
+<h4>Request</h4>
+<figure class="highlight">
+    <pre>
+POST http://127.0.0.1:8000/createplayergroup/ HTTP/1.1
+Host: 127.0.0.1:8000
+User-Agent: UnityPlayer/2017.1.0f3 (UnityWebRequest/1.0, libcurl/7.51.0-DEV)
+Accept: */*
+Accept-Encoding: identity
+Connection: Keep-Alive
+Content-Type: application/x-www-form-urlencoded
+X-Unity-Version: 2017.1.0f3
+Content-Length: 107
+
+gameKey=1f520423-65bb-423a-b3d0-9d14e0c39d31&matchKey=567de63e-768e-421a-82a1-763e7a349e4a&groupName=group1
+    </pre>
+</figure>
+<h4>Response</h4>
+<figure class="highlight">
+    <pre>
+HTTP/1.0 200 OK
+Date: Wed, 27 Dec 2017 08:57:01 GMT
+Server: WSGIServer/0.2 CPython/3.5.4
+Allow: OPTIONS, POST
+X-Frame-Options: SAMEORIGIN
+Vary: Accept
+Content-Type: application/json
+
+{"pool":"0.00",
+"key":"567de63e-768e-421a-82a1-763e7a349e4a",
+"date_created":"2017-12-27T08:56:54.120120Z",
+"date_finished":"2017-12-27T08:56:54.120120Z",
+"playerGroups":[{"name":"group1","players":[]}],
+"wager":"2.00"}
+    </pre>
+</figure>

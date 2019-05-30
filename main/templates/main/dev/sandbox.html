@@ -1,0 +1,48 @@
+{% extends 'main/header.html' %}
+{% load staticfiles %}
+{% block header %}
+        <!-- Include jQuery -->
+    <script src="{% static 'main/js/jquery-3.2.1.min.js' %}"></script>
+    <script type="application/javascript" src="{% static 'main/js/dev.js'%}"></script>
+    <script type="text/javascript">
+    $(function(){  // on page load
+        controlPanel("sandboxControlPanelTab" + {{ game.id }}, "dev/sandbox/{{ game.id }}/players/")
+        $("#home").click(function () {
+            $(".active").removeClass("active");
+            $(this).addClass("active");
+
+            loadTab($(this).data('ref'), "sandboxControlPanelTab" + {{ game.id }})
+        })
+    })
+  </script>
+    <link rel="stylesheet" href="{% static 'main/css/span6.css' %}">
+{% endblock %}
+{% block content %}
+
+    <div class="container">
+        <h1>Sandbox</h1>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header" id="home" data-ref="dev/sandbox/{{ game.id }}/home/">
+                    <button type="button" class="navbar-toggle"  data-toggle="collapse" data-target="#sandbox-navbar-collapse"
+                        style="border: 0px; height: 10px">
+                        <i class="fas fa-caret-down" style="color: grey; font-size: large;"></i>
+                    </button>
+                    <a class="navbar-brand " href="#" id="dev/sandbox/{{ game.id }}/home/">{{ game.name }}</a>
+                </div>
+                <div class="collapse navbar-collapse" id="sandbox-navbar-collapse">
+                    <ul class="nav navbar-nav" id="controlPanel">
+                        <li class="navlink" id="dev/sandbox/{{ game.id }}/players/"><a href="#">Players</a></li>
+                        <li class="navlink" id="dev/sandbox/{{ game.id }}/matches/"><a href="#">Matches</a></li>
+                        <li class="navlink" id="dev/sandbox/{{ game.id }}/settings/"><a href="#">Settings</a></li>
+                        <li class="navlink" id="dev/sandbox/{{ game.id }}/matchtypes/"><a href="#">Match Types</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div id="content">
+
+        </div>
+    </div>
+
+{% endblock %}

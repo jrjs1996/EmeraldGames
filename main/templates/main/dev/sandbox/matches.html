@@ -1,0 +1,52 @@
+<script>
+    $(".matchLink").click(function () {
+        var id = this.id;
+        $.ajax({
+              dataType: "text",
+              url: "match/" + this.id + "/",
+              // When the data is received from the request, do this:
+              success: function (result) {
+                  $("#content").html(result.toString());
+                  console.log({{ game.id }});
+                  var location = "dev/sandbox/{{ game.id }}/match/" + id + "/";
+                  sessionStorage.setItem("sandboxControlPanelTab" + {{ game.id }}, location)
+              }
+          })
+    })
+</script>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Key</th>
+        <th>Type</th>
+        <th>Created</th>
+        <th>Created</th>
+        <th>Pool</th>
+        <th>Wager</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for match in matches.all reversed %}
+        <tr>
+            <td><a id="{{ match.id }}" class="matchLink" style="cursor: pointer">{{ match.key }}</a></td>
+            <td>{{ match.type.name }}</td>
+            <td>{{ match.date_created }}</td>
+            <td>
+                {% if match.state == 0 %}
+                    Registering
+                {% elif match.state == 1 %}
+                    Started {{ match.date_started }}
+                {% elif match.state == 2 %}
+                    Finished {{ match.date_finished }}
+                {% else %}
+                    Aborted {{ match.date_finished }}
+                {% endif %}
+
+            </td>
+            <td>{{ match.pool }}</td>
+            <td>{{ match.wager }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

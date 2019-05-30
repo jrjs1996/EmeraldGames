@@ -1,0 +1,59 @@
+{% extends 'main/header.html' %}
+
+{% block content %}
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Forum
+                    <small>> <a href="/forum/{{ category }}/">{{ category }}</a></small>
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">{{ thread }}
+                    <small></small>
+                </h2>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                <tr>
+                    <td>{{ message.user.user_name }}<br>
+                        <img class="img-responsive" src="/media/main/avatar.png" alt="Chania" width="75%" height="75%" align="center">
+                        {{ message.date }}</td>
+                    <td width="85%">{{ message.text }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% if user.is_authenticated %}
+        <h4>Reply:</h4>
+        <div class="col-md-2 col-sm-12">
+            <b>{{ user.email }}</b>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="col-md-10 col-sm-12">
+                <textarea class="form-control" rows="5" id="message" name="message"></textarea>
+                <br>
+            <input type="submit" class="btn btn-info" value="Post reply">
+            </div>
+        </form>
+
+
+
+    {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,80 @@
+<script>
+    $(".matchLink").click(function () {
+
+        $.ajax({
+              dataType: "text",
+              url: "match/" + {{ match.id }} + "/",
+              // When the data is received from the request, do this:
+              success: function (result) {
+                  $("#content").html(result.toString());
+              }
+          })
+    })
+</script>
+
+<h1>Match <small><a class="matchLink" style="cursor: pointer">{{  match.key }}</a></small></h1>
+
+<div class="row content">
+    <div class="col-md-4">
+        <h3>Created: {{ match.date_started }}</h3>
+        <h3>Wager: {{ match.wager }}</h3>
+        <h3>Pool: {{ match.maxPool }}</h3>
+    </div>
+
+    <div class="col-md-6">
+
+        {% if match.state == 0 %}
+            <h3>
+                Registering
+            </h3>
+        {% elif match.state == 1 %}
+            <h3>
+                Started {{ match.date_started }}
+            </h3>
+        {% elif match.state == 2 %}
+            <h3>
+                Started {{ match.date_started }}
+            </h3>
+            <h3>
+                Finished {{ match.date_finished }}
+            </h3>
+            <h3>
+                Winning Group: {{ match.winning_player_group.get_name }}
+            </h3>
+        {% else %}
+            <h3>
+            {% if match.date_started is None %}
+                Match didn't start
+            {% else %}
+                Started {{ match.date_started }}
+            {% endif %}
+            </h3>
+            <h3>
+                Aborted {{ match.date_finished }}
+            </h3>
+        {% endif %}
+    </div>
+</div>
+<br>
+<h2>Groups:</h2>
+<hr>
+<div class="col-md-12">
+
+    {% for group in match.sandboxplayergroup_set.all %}
+        {% if not group.removed %}
+            <h3>{{ group.get_name }}<small> {{ group.getPlayers|length }} player(s)</small>
+        {% else %}
+            <h3 style="color: red;">{{ group.get_name }}<small style="color: red"> *removed*</small>
+        {% endif %}
+        </h3>
+        <hr>
+        {% for player in group.sandboxplayergroupplayer_set.all %}
+            {% if not player.quit %}
+                <h4>{{ player.player.name }}</h4>
+            {% else %}
+                <h4 style="color: red">{{ player.player.name }} *quit*</h4>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</div>
+

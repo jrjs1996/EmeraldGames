@@ -1,0 +1,22 @@
+{% extends 'main/header.html' %}
+{% block content %}
+    <h1>Deposit Page</h1>
+    {% if serverId == None %}
+    <h3>Current Balance: {{ user.balance }}</h3>
+    <form action="/depositmade/" method="post">
+        <label for="amount">Deposit Amount:</label>
+        <input type="text" id="amount" name="amount"/>
+        <input type="submit" value = "Deposit" class="btn btn-default"/>
+        {% csrf_token %}
+    </form>
+    {% endif %}
+    {% if serverId != None %}
+            <form action="/depositmade/?s={{ serverId  }}" method="post">
+        <label for="amount">Deposit Amount:</label>
+        <input type="text" id="amount" name="amount"/>
+        <input type="submit" value = "Deposit" class="btn btn-default"/>
+        {% csrf_token %}
+    </form>
+        <a href="login/{{ serverId }}/" class="btn btn-default">Return</a>
+    {% endif %}
+{% endblock %}

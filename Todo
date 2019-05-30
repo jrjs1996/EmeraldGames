@@ -1,0 +1,131 @@
+
+Pre Production Checklist
+------------------------
+
+1. Make sure Emerald Controller throws exceptions when it should. Test everything
+
+2. Make sure listeners work. Make sure everything updates
+
+3. Should log out player from server and clear their auth token.
+
+Make sure all error messages are correct
+
+Goals
+-----
+
+Create all home/content pages
+
+Text tutorials and pages on each of these things.
+
+Test everything on site. Make sure error messages show up whenever the user enters something they shouldn't
+
+Create Tests for everything
+
+Go through everything in database and write the business rules for them
+
+Create a tanks tutorial. Starting off with all of the prefabs but no coding.
+
+Production Checklist ( Pre Release )
+------------------------------------
+
+2.Make sure to update API reference and change all the examples and text so they don't contain any info like
+host 127.0.0.1:8000 or my email or test email that uses hotmail, they should use the site url that I use.
+
+4. Use HTTPS
+
+5. The photos in the tutorials and examples use 127.0.0.1 this should be changed
+
+Release Checklist
+-------------------
+
+1. Copy all proven sandbox db schemas and functions to the actual players
+
+2. Forum activity and playing activity in the players account page
+
+3. Write guidelines for using the platform with your game.
+
+Make sure players don't live in area where this is illegal
+
+Set up bank accounts / currency conversion system
+
+---------------------
+
+Whenever
+
+Change the logos on the api reference side panel from the blank papers to something cooler
+
+Notifications for forum
+
+Make selector arrow on small screen nav bar go up
+
+TODO: Finish the example in /refrence/playerquit.html
+
+Create video tutorials for the console application, video for making a game using the api. Introduction video.website django
+
+What if a player changes their username while in a match
+
+----------------------
+
+Important notes:
+
+There is alot of overhead with django transactions and it doesn't scale well. Should keep an eye out for alternatives
+
+See if I can just wrap the usercontrollers exception handling methods in the non exception handling methods an get the
+code from there to reduce copied code.
+
+
+----------------------
+
+Unity Program
+
+should also make sure that the unity program has an option to change the header  to the normal authorization in
+production
+
+How to make game key secret
+
+Will probably want logout to send an actual message to the server logging them out and destroying their key. Remember to
+redo all tutorials with this information. Including finished, and start examples
+
+Should I require rsa encryption?
+
+Should I log into emerald then get a client key as well as a temporary key then when a client logs into a server, it
+uses the temporary key to log into emerald. How do I make sure client server encryption is secure.
+
+I'm creating tests in the actual emerald controller so I should make sure this is removed from the actual program
+
+There was an exception when I tried two create matches. I should make sure none of this stuff happens if the user is
+doing things properly. It might have something to do with the coroutines accessing the match at the same time
+
+Didn't test cases for Addplayertogroup overloads that take a player
+------------------------------------
+
+Create a database which stores all documentaion of classes
+
+-------------------------------------
+
+Might have to include redis info in the readme. I'll have to see if I have any problems when I start the server.
+
+-------------------------------------
+
+Look into selenium for testing
+
+-------------------------------------
+
+Websockets with sandbox so that match details are updated without the user having to refresh
+
+-------------------------------------
+
+Reporting Cheaters
+
+Getting Press
+
+Version of functions on each class
+
+Create Tests Unity
+
+Logging on Server
+
+Reset balances point on API Sandbox for testing
+
+If I make a bash script to run things I should have a debug and a main version and when I start celery in debug
+the time should be 10s and on production it should be 60s

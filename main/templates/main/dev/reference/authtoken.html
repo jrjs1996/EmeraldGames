@@ -1,0 +1,35 @@
+<h2>authtoken/</h2>
+<p>Gets a users authentication token when given their username and password. The request must contatin POST fields for
+    username and password.
+    </p>
+<h3>Example</h3>
+<h4>Request</h4>
+<figure class="highlight">
+    <pre>
+GET http://127.0.0.1:8000/authtoken/ HTTP/1.1
+Host: 127.0.0.1:8000
+User-Agent: UnityPlayer/2017.1.0f3 (UnityWebRequest/1.0, libcurl/7.51.0-DEV)
+Accept: */*
+Accept-Encoding: identity
+Connection: Keep-Alive
+Content-Type: application/x-www-form-urlencoded
+X-Unity-Version: 2017.1.0f3
+Content-Length: 51
+
+username=jrjs1996@hotmail.com
+password=testpassword
+    </pre>
+</figure>
+<h4>Response</h4>
+<figure class="highlight">
+    <pre>
+HTTP/1.0 200 OK
+Date: Wed, 27 Dec 2017 08:04:32 GMT
+Server: WSGIServer/0.2 CPython/3.5.4
+Allow: OPTIONS, GET
+Content-Type: application/json
+Vary: Accept
+X-Frame-Options: SAMEORIGIN
+{"token":"29b06fb223e0a33eb48ff3577627614e979397cf"}
+    </pre>
+</figure>

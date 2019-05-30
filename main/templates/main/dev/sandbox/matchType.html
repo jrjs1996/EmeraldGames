@@ -1,0 +1,77 @@
+{% load staticfiles %}
+
+<script type="application/javascript" src="{% static 'main/js/dev.js'%}"></script>
+<script>
+    $(function () {
+        maxMatchLength({{ matchType.id }}, {{ matchType.max_match_length }});
+    });
+
+    var addGroupPresetBtn = $("#addGroupPresetButton");
+
+    addGroupPresetBtn.click( function () {
+            var name = $("#addGroupPresetInput").val();
+            $.post('settings/', {
+                operation: 'addGroupPreset',
+                name: name,
+                matchType: {{ matchType.id }},
+                csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
+            }).done(
+                function (result) {
+                    window.location.reload()
+                }
+            )
+        });
+
+    function deleteGroupPreset(id) {
+            $.post('settings/', {
+                operation: 'deleteGroupPreset',
+                id: id,
+                csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
+            }).done(
+                function (result) {
+                    window.location.reload()
+                }
+            )
+        }
+</script>
+
+<h1>Match Type <small><a class="matchLink" style="cursor: pointer">{{ matchType.name }}</a></small></h1>
+<div id="maxMatchLength">
+    {% include 'main/dev/sandbox/matchType/maxMatchLength.html' %}
+</div>
+
+{% csrf_token %}
+{% if matchType.sandboxmatchtypegroup_set.count == 0 %}
+    <br>
+    <h3 style="color: red">You haven't added any groups for this match type yet.</h3>
+    <br>
+    <br>
+{% else %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Group Presets</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for group in matchType.sandboxmatchtypegroup_set.all %}
+            <tr>
+                <td>{{ group.name }}</td>
+                <td><button class="btn btn-danger" onclick="deleteGroupPreset({{ group.id }})">Delete</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-3 col-sm-12" style="padding-bottom: 5px">
+        <input class="form-control" type="test" id="addGroupPresetInput" placeholder="Name"/>
+    </div>
+    <div class="col-md-2 col-sm-12">
+        <button class="btn btn-success" id="addGroupPresetButton">Add Group Preset</button>
+    </div>
+</div>
+
+

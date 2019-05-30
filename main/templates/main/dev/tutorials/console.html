@@ -1,0 +1,142 @@
+{% extends 'main/header.html' %}
+{% load staticfiles %}
+{% block content %}
+    <style>
+        img {
+            border: 3px solid rgba(92, 184, 92, 0.66);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <div class="container" style="padding-top: 35px; font-size: 21px; padding-left: 120px; padding-right: 120px; padding-bottom: 300px">
+
+    <img class="border border-success center-block img-responsive" src="{% static 'main/img/dev/tutorials/UnityConsoleHelp.png' %}">
+
+    <h1>Unity Console Tutorial</h1>
+        <p>
+            The unity console is a great tool for familiarizing yourself with the emerald platform. It uses the emerald
+            player controller, which allows you to easily connect any game to emerald. In this tutorial you will begin
+            by creating a game on the dashboard, complete with test players. After that you will start a match using the
+            unity console and walk through the entire process a match goes through. If you haven't already, sign up for
+            a developer account <a href="/dev/signup/">here</a>.
+        </p>
+
+        <p>
+            After creating your account, go to the account page. Here you should see your account information as well as a list
+            of your games. It will look something like this:
+        </p>
+
+        <img class="center-block img-responsive" src="{% static 'main/img/dev/tutorials/DevAccountPage.png' %}">
+
+        <p>
+            Create a game by entering a title and clicking the add game button:
+        </p>
+
+        <img class="center-block img-responsive" src="{% static 'main/img/dev/tutorials/DevAccountPageAddGameExample.png' %}">
+
+        <p>
+            Click on the title of the game you created to get to the games sandbox. The sandbox is an area where you can
+            test your games while integrating them with the emerald platform. Here you can create test players and view
+            the status of your test matches.
+        </p>
+
+        <p>
+            Let's create a couple of players to test out the system with. Navigate to the players tab. Enter a name
+            and a starting balance for the player, then click the Add player button. Do this once more so we can have two
+            players enter a match against each other.
+        </p>
+
+        <img class="center-block img-responsive" src="{% static 'main/img/dev/tutorials/DevSandboxPage.png' %}">
+
+        <p>
+            Now that we have two players to test with. Lets start up the unity test project and open the console scene.
+        </p>
+
+        <p>
+            Before we start we will need to make sure we're using our game key for this project. The game key can be
+            found by clicking on our games name in the sandbox. Open the  PlayerController.cs file and replace the GameKey
+            placeholder with the key for your new game.
+        </p>
+
+        <img class="center-block img-responsive" src="{% static 'main/img/dev/tutorials/DevGameKey.png' %}">
+
+        <p>
+            The project is now set to work with your game. Head back to the unity editor and start the scene. To view all of the
+            commands available to you in the console enter the command 'help'. We want to create a new match to test our
+            game with. To do this we use the creatematch command. Let's create a match with a $0.25 wager. Enter the command
+            "creatematch 0.25".
+        </p>
+
+        <p>
+            After entering the creatematch command you should see the match info printed to the console. This information
+            is given to us when we make the creatematch request to the API. Here we see the match key, the match
+            state, the current pool, the wager amount we specified earlier, and the date the match was created.
+        </p>
+        
+        <img class="center-block img-responsive" src="{% static 'main/img/dev/tutorials/DevConsoleCreateMatch.png' %}">
+
+        <p>
+            If you go to the matches tab in the sandbox, you will see the match you've created.
+        </p>
+
+        <img class="center-block img-responsive" src="{% static 'main/img/dev/tutorials/SandboxMatchesList.png' %}"/>
+
+        <p>
+            To get a more detailed look at the match, click on the match key.
+        </p>
+
+        <img class="center-block img-responsive" src="{% static 'main/img/dev/tutorials/DevMatchPageEmpty.png' %}">
+
+        <p>
+            Lets add two player groups to the match so we can add our players to them. To do this we use the command
+            "createplayergroup 'groupname'". For simplicity we will name the groups 'group1' and 'group2'. Enter the command
+            "createplayergroup group1", then enter the command "createplayergroup group2".  If you refresh your match
+            page you will see the two groups we've created.
+        </p>
+
+        <img class="center-block img-responsive"
+             src="{% static 'main/img/dev/tutorials/DevMatchPageGroupsEmpty.png' %}"/>
+
+        <p>
+            We now need to log our two players in. This is done with the command "login 'username(email)' 'password'".
+            All sandbox players are created with the default password "testpassword". So let's log our two players in
+            with the following commands: "login Player1 testpassword" and "login Player2 testpassword".
+        </p>
+
+        <img class="center-block img-responsive"
+             src="{% static 'main/img/dev/tutorials/UnityConsolePlayersLoggedIn.png' %}"/>
+
+        <p>
+            Now let's add our players to their groups. To add a player to a group, use the command "addplayertogroup
+            'playergroup' 'username'. Add each player to their respective group with the commands: "addplayertogroup
+            group1 Player1" and "addplayertogroup group2 Player2". After adding a player to a group you should see the
+            current state of the match in the console.
+        </p>
+
+        <img class="center-block img-responsive"
+             src="{% static 'main/img/dev/tutorials/UnityConsolePlayerGroups.png' %}" />
+
+        <p>
+            Head back to the match page and refresh. You will now see the two players in their playergroups and $0.50 in the pool.
+            We're now ready to start the match. Enter the command "startmatch". If you refresh the match page you will see that the
+            state has changed to started and the start time is shown.
+        </p>
+
+        <img class="center-block img-responsive" src="{% static 'main/img/dev/tutorials/DevMatchWithPlayers.png' %}">
+
+        <p>
+            We now want to end the match. This is done with the command "endmatch 'winningPlayergroup'". Enter the command
+            "endmatch group1". Refreshing the match page will show that the match has finished and the winning group is displayed.
+            If we go the the players page we will see that our players balances have changed. The winning player has gained $0.25 and
+            the losing player has lost $0.25.
+        </p>
+
+        <img class="center-block img-responsive" src="{% static 'main/img/dev/tutorials/DevPlayersBalancesChanged.png' %}">
+
+        <p>
+            The console is used to test and familiarize yourself with the emerald platform. It will help you understand which
+            actions must occur when going through a match. Try playing around with more player groups and players in a match.
+        </p>
+
+    </div>
+{% endblock %}

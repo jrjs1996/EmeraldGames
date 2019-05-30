@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<docs>
+  <members Name="PlayerController">
+    <PlayerController>
+      <summary>
+      </summary>
+      <remarks>
+        <para></para>
+      </remarks>
+    </PlayerController>
+    <CreateHeadersWithToken>
+      <summary>
+        Creates a headers dictionary containing an Authorization header with the given Players token.
+      </summary>
+      <param Name="player">Player to create the headers dicitonary with.</param>
+      <param Name="eHandler"></param>
+      <returns>A headers dictionary with above specifications.</returns>
+    </CreateHeadersWithToken>
+    <GetPlayerFromWww>
+      <summary>
+        Sets the given Players info as the player info in the www.
+      </summary>
+      <param Name="player">Player whos information you want.</param>
+      <param Name="www">www containing a json representation of a player.</param>
+      <param Name="eHandler"></param>
+    </GetPlayerFromWww>
+    <GetMatchFromWww>
+      <summary>
+        Gets a match from a www.
+      </summary>
+      <param Name="www">WWW containing a JSON representation of a match</param>
+      <param Name="eHandler"></param>
+      <returns>A Match object containing the information www.</returns>
+    </GetMatchFromWww>
+    <Post>
+      <summary>
+        Sends a post request to the specified url with the given fields. Then cells the callback method with the response
+        text.
+        args paramater should follow the following format:
+        Args [0] = url
+        Args[1] = FieldName, Args[2] = FieldValue, Args[3] = Field2Name, Args[4] = Field2Value, etc.
+      </summary>
+      <param Name="args">Arguments for post request following the format given above.</param>
+      <param Name="callback">Method to call with the response text.</param>
+      <returns>Nothing</returns>
+    </Post>
+    <Login>
+      <summary>
+        Logs the player in to the server. Calls the callback with the player that has been logged in.
+      </summary>
+      <param Name="userName">UserName of the player</param>
+      <param Name="password">Password of the player</param>
+      <param Name="callback">Method that takes a player as a parameter.</param>
+      <param Name="eHandler"></param>
+      <returns>Nothing</returns>
+    </Login>
+    <UpdatePlayerInfo>
+      <summary>
+        Updates the Players info from the server. Then calls the callback with the player.
+      </summary>
+      <param Name="userName">UserName of the player to update</param>
+      <param Name="callback">Method to be called with the Players info</param>
+      <param Name="eHandler"></param>
+      <returns>Nothing</returns>
+    </UpdatePlayerInfo>
+    <CreateMatch>
+      <summary>
+        Starts a new match with the given Wager amount.
+      </summary>
+      <param Name="Wager">Wager amount for this match.</param>
+      <param Name="callback">Method to be called with the newly created match.</param>
+      <param Name="matchType"></param>
+      <param Name="eHandler"></param>
+      <returns>Nothing</returns>
+    </CreateMatch>
+    <EndMatch>
+      <summary>
+        End the current match.
+      </summary>
+      <param Name="groupName"></param>
+      <param Name="callback">Methed to be called with the match that was just ended.</param>
+      <param Name="eHandler"></param>
+      <returns>Nothing</returns>
+    </EndMatch>
+    <UpdateMatch>
+      <summary>
+        Update the current match from the server.
+      </summary>
+      <param Name="callback">Method to call with the updated match</param>
+      <param Name="eHandler"></param>
+      <returns>Nothing</returns>
+    </UpdateMatch>
+    <CreatePlayerGroup>
+      <summary>
+        Creates a new player group in the current match.
+      </summary>
+      <param Name="groupName">The Name of the group to be created.</param>
+      <param Name="callback">Method to be called with the match.</param>
+      <param Name="eHandler"></param>
+      <returns>Nothing</returns>
+    </CreatePlayerGroup>
+    <AddPlayerToGroup>
+      <summary>
+        Adds a player to the specified player group in the match.
+      </summary>
+      <param Name="groupName">Name of the player group to add the player to.</param>
+      <param Name="playerUserName">UserName of the player you want to add to the group.</param>
+      <param Name="callback">Method to be called with the match.</param>
+      <param Name="eHandler"></param>
+      <returns>Nothing</returns>
+    </AddPlayerToGroup>
+  </members>
+  <members Name="PlayerGroup">
+    <add>
+      <summary>
+        Gets all the Players that were added to the PlayerGroup and calls 'OnAdd' on this
+        PlayerGroups listeners.
+      </summary>
+      <param Name="updatedPlayers">The updated list of Players.</param>
+    </add>
+    <remove>
+      <summary>
+        Gets all the Players that were removed from the PlayerGroup and calls 'OnRemove; on this
+        PlayerGroups listeners.
+      </summary>
+      <param Name="updatedPlayers">The updated list of Players</param>
+    </remove>
+  </members>
+</docs>

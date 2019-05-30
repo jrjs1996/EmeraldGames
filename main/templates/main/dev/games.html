@@ -1,0 +1,46 @@
+{% if user.developer.game_set.count > 0 %}
+            <h3>Games: </h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Game</th>
+                        <th>Key</th>
+                        <th>Date created</th>
+                        <th>Approved</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game in user.developer.game_set.all %}
+                    <tr>
+                        <td width="40%"><a href="/dev/sandbox/{{ game.id }}/">{{ game.name }}</a></td>
+                        <td>{{ game.key }}</td>
+                        <td>{{ game.date_created }}</td>
+                        {% if game.approved == false %}
+                            <td><i class="fas fa-check"></i></td>
+                        {% else %}
+                            <td><i class="fas fa-times"></i></td>
+                        {% endif %}
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <p style="color: red">You don't have any games yet! Add a game to get started with the sandbox. Check
+                out our developers home page to see our tutorials.
+                </p>
+                <br>
+            {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="col-md-2">
+                <input class="btn btn-info" value="Add Game" id="newGame" type="submit">
+            </div>
+
+            <div id="newThread" class="col-md-4 span6">
+                <label for="newGame">Title: </label>
+                <input name="name" class="form-control">
+            </div>
+        </form>
+        </div>
+    </div>

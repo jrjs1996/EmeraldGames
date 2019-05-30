@@ -1,0 +1,36 @@
+@api_view(['POST'])
+def create_solo_player_groups(request):
+    try:
+        with transaction.atomic():
+            # Get the match from the game and the match key
+            sandbox_match = get_match(request.POST['gameKey'], request.POST['matchKey'])
+
+            auth_tokens = request.POST['auth_tokens'].split(',')
+            for auth_token in auth_tokens:
+                # Get the player
+                sandbox_player = SandboxPlayer.objects.select_for_update().get(id=auth_token)
+
+                # Create the user group in the match
+                sandbox_player_group = sandbox_match.create_player_group(sandbox_player.name)
+
+                # Add the player to the group
+                sandbox_player_group.add_player(sandbox_player)
+
+                # Serialize the match
+                serializer = serializers.SandboxMatchSerializerFull(sandbox_match)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except SandboxMatchCreateUserGroupError as e:
+        return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+    except MultiValueDictKeyError as e:
+        handle_MultiValueDictKeyError(e)
+    except Game.DoesNotExist:
+        # If there is not a game that matches the gameKey return a 404 error.
+        return Response("Error: Game matching the given gameKey does not exist in the database.",
+                        status=status.HTTP_404_NOT_FOUND)
+    except SandboxMatch.DoesNotExist:
+        # If there is not a match that matches the matchKey return a 404 error.
+        return Response("Error: Match matching the given matchKey does not exist in the database.",
+                        status=status.HTTP_404_NOT_FOUND)
+    return Response(status=status.HTTP_400_BAD_REQUEST)

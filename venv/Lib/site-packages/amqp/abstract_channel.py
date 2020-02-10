@@ -2,6 +2,8 @@
 # Copyright (C) 2007-2008 Barry Pederson <bp@barryp.org>)
 from __future__ import absolute_import, unicode_literals
 
+import logging
+
 from vine import ensure_promise, promise
 
 from .exceptions import AMQPNotImplementedError, RecoverableConnectionError
@@ -9,6 +11,12 @@ from .five import bytes_if_py2
 from .serialization import dumps, loads
 
 __all__ = ['AbstractChannel']
+
+AMQP_LOGGER = logging.getLogger('amqp')
+
+IGNORED_METHOD_DURING_CHANNEL_CLOSE = """\
+Received method %s during closing channel %s. This method will be ignored\
+"""
 
 
 class AbstractChannel(object):
@@ -22,6 +30,7 @@ class AbstractChannel(object):
     """
 
     def __init__(self, connection, channel_id):
+        self.is_closing = False
         self.connection = connection
         self.channel_id = channel_id
         connection.channels[channel_id] = self
@@ -80,6 +89,7 @@ class AbstractChannel(object):
 
             if p.value:
                 args, kwargs = p.value
+                args = args[1:]  # We are not returning method back
                 return args if returns_tuple else (args and args[0])
         finally:
             for i, m in enumerate(method):
@@ -89,6 +99,17 @@ class AbstractChannel(object):
                     pending.pop(m, None)
 
     def dispatch_method(self, method_sig, payload, content):
+        if self.is_closing and method_sig not in (
+            self._ALLOWED_METHODS_WHEN_CLOSING
+        ):
+            # When channel.close() was called we must ignore all methods except
+            # Channel.close and Channel.CloseOk
+            AMQP_LOGGER.warning(
+                IGNORED_METHOD_DURING_CHANNEL_CLOSE,
+                method_sig, self.channel_id
+            )
+            return
+
         if content and \
                 self.auto_decode and \
                 hasattr(content, 'content_encoding'):
@@ -106,17 +127,13 @@ class AbstractChannel(object):
         try:
             listeners = [self._callbacks[method_sig]]
         except KeyError:
-            listeners = None
+            listeners = []
+        one_shot = None
         try:
             one_shot = self._pending.pop(method_sig)
         except KeyError:
             if not listeners:
                 return
-        else:
-            if listeners is None:
-                listeners = [one_shot]
-            else:
-                listeners.append(one_shot)
 
         args = []
         if amqp_method.args:
@@ -126,6 +143,9 @@ class AbstractChannel(object):
 
         for listener in listeners:
             listener(*args)
+
+        if one_shot:
+            one_shot(method_sig, *args)
 
     #: Placeholder, the concrete implementations will have to
     #: supply their own versions of _METHOD_MAP

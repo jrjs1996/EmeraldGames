@@ -145,10 +145,10 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'main.User'
 
-#Change this before release
+# Change this before release
 CSRF_COOKIE_SECURE = False
 
-#Lifespan of tokens for rest framework api token authentication
+# Lifespan of tokens for rest framework api token authentication
 EXPIRING_TOKEN_LIFESPAN = datetime.timedelta(hours=4)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "main/media/")

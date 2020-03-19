@@ -1,5 +1,5 @@
 """
-Last edited by James Scarrow 2019-01-23
+Last edited by James Scarrow 2020-03-19
 This file contains the actions that can be taken on sandbox matches. This should contain all of the necessary actions
 that can be taken in an Emerald match. It also contains convenience actions that condense multiple actions into a single
 one. The docstrings for every function should contain all of the preconditions and postconditions for the actions, which
@@ -11,6 +11,10 @@ data structures and what operations can be performed on them. It is possible for
 the models (and it might be a good idea to move these there in the future). Though as of writing I'm currently in the
 process of moving from the HTTP REST API to sockets. So my primary objective now is to create actions that can be used
 by both the HTTP API and sockets as things transition.
+
+Transactions are important for database integrity. More info on transactions and functions like select_for_update() at:
+https://docs.djangoproject.com/en/3.0/topics/db/transactions/
+https://docs.djangoproject.com/en/3.0/ref/models/querysets/
 """
 from main.models import *
 from main.serializers import *
@@ -44,7 +48,7 @@ def add_player_to_group(game_key, match_key, group_name, auth_token):
     """
     with transaction.atomic():
         sandbox_match = get_match(game_key, match_key)
-        sandbox_player_group = None
+        sandbox_player_group = None  # TODO: Variable not used. Why is this here?
         try:
             sandbox_player_group = get_player_group(sandbox_match, group_name)
         except SandboxPlayerGroup.DoesNotExist:
@@ -188,6 +192,7 @@ def player_quit(game_key, match_key, auth_token):
     :return: A JSON representation of the match.
     """
     with transaction.atomic():
+        # TODO: Shouldn't the following line use get_match(game_key, match_key)?
         sandbox_match = SandboxMatch.objects.select_for_update().get(game__key=game_key,
                                                                      key=match_key)
         sandbox_player = get_player_in_match(sandbox_match, auth_token)
@@ -232,11 +237,11 @@ def start_match(game_key, match_key):
 
 
 # Helper functions
-
+# TODO: Some of the helper functions throw exceptions and some do not. Should they all?
 
 def get_match(game_key, match_key):
     """
-    Gets the match with the given game_key and match_key.
+    Gets the match with the given game_key and match_key from the database.
     :param game_key: The game_key of the match to get.
     :param match_key: The match_key of the match to get.
     :return: The specified match.
@@ -245,11 +250,23 @@ def get_match(game_key, match_key):
 
 
 def get_player_group(match, group_name):
+    """
+    Gets the player group in the given match that has the specified group_name from the database.
+    :param match: The match containing the desired group.
+    :param group_name: The name of the group to retrieve from the database.
+    :return: The specified player group.
+    """
     return SandboxPlayerGroup.objects.select_for_update().get((Q(name=group_name) | Q(type_group__name=group_name)) &
                                                               Q(match=match))
 
 
 def get_player_in_match(match, auth_token):
+    """
+    Gets the player in the match that has the specified auth token from the database.
+    :param match: The match containing the desired player.
+    :param auth_token: The auth_token of the player to retrieve from the database.
+    :return: The specified player.
+    """
     try:
         return SandboxPlayer.objects.select_for_update().get(sandboxplayergroupplayer__playerGroup__match=match,
                                                              id=auth_token)
@@ -258,5 +275,10 @@ def get_player_in_match(match, auth_token):
 
 
 def serialize_match(sandbox_match):
+    """
+    Refreshes the specified sandbox_match from the database and returns the serialized version.
+    :param sandbox_match: The sandbox_match to serialize.
+    :return: The serialized sandbox_match.
+    """
     sandbox_match.refresh_from_db()
     return SandboxMatchSerializerFull(sandbox_match).data

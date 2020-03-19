@@ -235,7 +235,7 @@ class SandboxMatch(models.Model):
     set when the match is over. The date_finished is set to the same value as date_created when the Match is created,
     this is how you can tell the match is still going.
     """
-    # The amount of money in the pool
+    # The current amount of money in the pool
     pool = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     # The maximum amount of money that has been in the pool
@@ -244,7 +244,7 @@ class SandboxMatch(models.Model):
     # The wager in amount for the match
     wager = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
-    # A unique identifier to be used to access the game
+    # A unique identifier to be used to access the match
     key = models.CharField(max_length=100, blank=False, unique=False, default=uuid.uuid4)
 
     # The game the match belongs to

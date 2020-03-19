@@ -20,5 +20,6 @@ pycparser
 python-crontab
 python-dateutil
 pytz
+redis
 six
 vine

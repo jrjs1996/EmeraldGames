@@ -90,7 +90,7 @@ class MatchSerializerFull(serializers.ModelSerializer):
 
     class Meta:
         model = Match
-        fields = ('pool', 'key', 'date_created', 'date_started', 'date_finished', 'userGroups', 'key', 'wager')
+        fields = ('pool', 'key', 'date_created', 'date_finished', 'userGroups', 'key', 'wager')
 
 
 # ---------------------------------------------------------- Sandbox ---------------------------------------------------

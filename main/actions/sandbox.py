@@ -235,6 +235,12 @@ def start_match(game_key, match_key):
 
 
 def get_match(game_key, match_key):
+    """
+    Gets the match with the given game_key and match_key.
+    :param game_key: The game_key of the match to get.
+    :param match_key: The match_key of the match to get.
+    :return: The specified match.
+    """
     return SandboxMatch.objects.select_for_update().get(game__key=game_key, key=match_key)
 
 

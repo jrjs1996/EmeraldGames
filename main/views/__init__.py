@@ -110,7 +110,7 @@ def account(request):
 
 def deposit(request):
     # If the user is logged in...
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         # If the user is going to the deposit page from a server login screen send the server ID to the page so the page
         # can display a button that takes them back to the server login screen.
         if 's' in request.GET:
@@ -122,7 +122,7 @@ def deposit(request):
 
 def deposit_made(request):
     amount = int(request.POST['amount'])
-    if request.user.is_authenticated() and amount > 0:
+    if request.user.is_authenticated and amount > 0:
         request.user.balance += amount
         request.user.save()
         # If the user is going to the deposit page from a server login screen send the server ID to the page so the page

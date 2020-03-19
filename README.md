@@ -13,6 +13,8 @@ Install all of the requirements.
 
 <code>pip install -r requirements.txt</code>
 
+Install redis and rabbitmq. There are used by celery.
+
 See section <i>Important Notes on Dependencies</i> if there are problems with setup
 
 <h3>SECTION 2: Celery</h3>

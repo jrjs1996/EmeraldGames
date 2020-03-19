@@ -104,7 +104,7 @@ Create a database which stores all documentaion of classes
 -------------------------------------
 
 Might have to include redis info in the readme. I'll have to see if I have any problems when I start the server.
-
+ 
 -------------------------------------
 
 Look into selenium for testing

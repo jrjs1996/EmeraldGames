@@ -225,6 +225,10 @@ class SandboxMatchType(models.Model):
 
 
 class SandboxMatchTypeGroup(models.Model):
+    """
+    A preset group for a SandboxMatchType. When a match with a given match type is created player groups will
+    automatically be created for each match type group belonging to the match type.
+    """
     name = models.CharField(max_length=50, blank=False)
     match_type = models.ForeignKey(SandboxMatchType, blank=False, on_delete=models.CASCADE)
 

@@ -626,6 +626,10 @@ class SandboxPlayer(models.Model):
 
 
 class SandboxPlayerGroupPlayer(models.Model):
+    """
+    Represents the relationship between a sandbox player and a player group. Stores any information that has to do with
+    that relationship.
+    """
     player = models.ForeignKey(SandboxPlayer, blank=False, on_delete=models.CASCADE)
     playerGroup = models.ForeignKey(SandboxPlayerGroup, blank=False, on_delete=models.CASCADE)
     quit = models.BooleanField(blank=False, default=False)

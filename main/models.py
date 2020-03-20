@@ -600,6 +600,11 @@ class SandboxPlayerGroup(models.Model):
 
 
 class SandboxPlayer(models.Model):
+    """
+    Sandbox players belong to a game. Developers can set their balance, name, password etc. and use the sandbox players
+    with the sandbox API to test their matches. Sandbox players can join sandbox matches that belong to their game.
+    Their balances will be updated when they join and finish matches just like a real players would.
+    """
     name = models.CharField(_('Name'), max_length=30, blank=False, unique=False)
     date_created = models.DateTimeField(_('Date Created'), auto_now_add=True)
     game = models.ForeignKey(Game, blank=False, on_delete=models.CASCADE)

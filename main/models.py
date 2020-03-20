@@ -219,7 +219,7 @@ class SandboxMatchType(models.Model):
         if not self.name or not self.name.strip():
             raise MatchTypeCreationError("Error: Cannot create a match type without a name")
         if (not self.pk and self.game.sandboxmatchtype_set.filter(name=self.name).count() > 0) or  \
-            (self.pk is not None and (self.name != SandboxMatchType.objects.get(id=self.pk).name)):
+                (self.pk is not None and (self.name != SandboxMatchType.objects.get(id=self.pk).name)):
             raise MatchTypeCreationError("Error: Game already has a match type with the given name.")
         super(SandboxMatchType, self).save(*args, **kwargs)
 
@@ -290,7 +290,7 @@ class SandboxMatch(models.Model):
         if not self.pk:
             if self.state != 0:
                 raise MatchCreationError("Cannot set the state when creating a match, it is automatically"
-                                              " set to registering.")
+                                         " set to registering.")
             if self.pool != 0:
                 raise MatchCreationError("Cannot set the pool when creating a match.")
             if self.maxPool != 0:
@@ -352,17 +352,17 @@ class SandboxMatch(models.Model):
                 Q(name=sandbox_player_group_name_or_typegroup) |
                 Q(type_group__name=sandbox_player_group_name_or_typegroup)).exists()):
             raise MatchCreateUserGroupError("Error: A usergroup with the given groupName already exists in"
-                                                    " this match.")
+                                            " this match.")
         # If a the match has already finished...
         elif self.state == 1:
             raise MatchCreateUserGroupError("Error: Cannot create a user group when the match has"
-                                                   " already started")
+                                            " already started")
         elif self.state == 2:
             raise MatchCreateUserGroupError("Error: Cannot create a user group when the match has"
-                                                   " already ended")
+                                            " already ended")
         elif self.state == 3:
             raise MatchCreateUserGroupError("Error: Cannot create a user group when the match has"
-                                                   " already been aborted")
+                                            " already been aborted")
 
     def end_match(self, winning_player_group):
         # If there is money in the pool and the match has not ended
@@ -616,7 +616,7 @@ class SandboxPlayer(models.Model):
         if not self.pk:
             if SandboxPlayer.objects.filter(game=self.game, name=self.name).count() != 0:
                 raise PlayerCreateError("Error: A sandbox player with the given name"
-                                               " already exists for this game.")
+                                        " already exists for this game.")
         super(SandboxPlayer, self).save(*args, **kwargs)
 
 

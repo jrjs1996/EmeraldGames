@@ -1,3 +1,6 @@
+"""
+Last edited by James Scarrow 2020-03-20
+"""
 import uuid
 from datetime import datetime
 # from djmoney.models.fields import MoneyField
@@ -202,6 +205,11 @@ class PlayerGroupPlayer(models.Model):
 
 
 class SandboxMatchType(models.Model):
+    """
+    Represents a type of match a sandbox game can have, e.g. Team Deathmatch, Free for all. It is not necessary for
+    a match to have a match type but it can be useful for automatically setting up the match to have certain properties,
+    such as groups that are created with the match (implementing) or preset payout schemes (idea).
+    """
     name = models.CharField(max_length=50, blank=False, null=False)
     game = models.ForeignKey(Game, blank=False, null=False, on_delete=models.CASCADE)
     max_match_length = models.IntegerField(blank=False, null=False, default=60)
@@ -335,8 +343,7 @@ class SandboxMatch(models.Model):
                 group_with_name.save()
                 return group_with_name
 
-
-        # If a usergroup with the given name already exists in the match...
+        # If a user_group with the given name already exists in the match...
         if (self.sandboxplayergroup_set.filter(
                 Q(name=sandbox_player_group_name_or_typegroup) |
                 Q(type_group__name=sandbox_player_group_name_or_typegroup)).exists()):

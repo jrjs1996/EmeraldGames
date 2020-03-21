@@ -246,7 +246,6 @@ class SandboxMatch(models.Model):
     Each match belongs to a game. Has a date created and date finished fields. The date_finished field should be
     set when the match is over. The date_finished is set to the same value as date_created when the Match is created,
     this is how you can tell the match is still going.
-    TODO: Create player groups based on match types preset groups.
     """
     # The current amount of money in the pool
     pool = models.DecimalField(max_digits=10, decimal_places=2, default=0)

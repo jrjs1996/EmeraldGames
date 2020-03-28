@@ -316,6 +316,10 @@ class SandboxMatch(models.Model):
             raise MatchStartMatchError("Error: Cannot start the match, the pool must be greater than 0.")
         elif len(self.get_players()) < 2:
             raise MatchStartMatchError("Error: Cannot start the match, there must be at least 2 players")
+        # Remove all empty player groups before starting the match
+        for player_group in self.sandboxplayergroup_set.all():
+            if player_group.getPlayerCount() == 0:
+                self.remove_group(player_group)
         self.state = 1
         self.date_started = datetime.now()
         self.save()
@@ -474,9 +478,6 @@ class SandboxMatch(models.Model):
         sandbox_player_group_player.refresh_from_db()
         sandbox_player_group_player.quit = True
         sandbox_player_group_player.save()
-        # If there are no players left in the player group, remove the player group.
-        if player_group.getPlayerCount() == 0:
-            self.remove_group(player_group)
 
     def remove_group(self, sandbox_player_group):
         if self.state != 0:

@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+  db:
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: testpassword
+    image: mysql:8
+    restart: always
+    volumes:
+      - datastore:/var/lib/mysql
+
+  djangop:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    container_name: djangop
+    depends_on:
+      - db
+      - redis
+    image: djangop
+    ports:
+    - "8000:8000"
+    restart: on-failure
+    volumes:
+    - "F:\\projects\\Django\\djangop:/app/"
+
+  djangop-migrate:
+    command: python manage.py migrate
+    container_name: djangop-migrate
+    depends_on:
+      - djangop
+    image: djangop
+    restart: on-failure
+
+  celery:
+    command: celery -A djangop worker --loglevel=info -P gevent
+    depends_on:
+      - db
+      - djangop
+      - redis
+    image: djangop
+    restart: on-failure
+
+  celery-beat:
+    command: celery -A djangop beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    depends_on:
+      - db
+      - djangop
+      - redis
+
+    image: djangop
+    restart: on-failure
+
+  redis:
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+    image: redis
+    restart: on-failure
+
+volumes:
+  datastore:

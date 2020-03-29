@@ -208,4 +208,5 @@ class PlayerInGameError(Exception):
 
 
 def serialize_exception(exception):
+    print(exception)
     return {'Code': exception.code, 'Message': str(exception)}

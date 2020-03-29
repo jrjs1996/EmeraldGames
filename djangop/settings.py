@@ -89,9 +89,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mysql',
-        'USER': 'djangop',
+        'USER': 'root',
         'PASSWORD': 'testpassword',
-        'HOST': '127.0.0.1',
+        'HOST': 'db',
         'PORT': '3306',
 
     }
@@ -159,12 +159,12 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [('192.168.0.16', 6379)],
         },
     },
 }
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
 
 CELERYBEAT_SCHEDULE = {
     'prune-presence': {

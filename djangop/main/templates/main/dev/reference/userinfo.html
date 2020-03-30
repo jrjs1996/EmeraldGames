@@ -1,0 +1,33 @@
+<h2>userinfo/</h2>
+<p>Returns a JSON representation of the logged in user. The request must contain an Authorization header containing the
+    users authentication token, following the format below. The authentication token for the user can be obtained from
+    /authtoken.</p>
+<h3>Example</h3>
+<h4>Request</h4>
+<figure class="highlight">
+    <pre>
+GET http://127.0.0.1:8000/userinfo/ HTTP/1.1
+Host: 127.0.0.1:8000
+User-Agent: UnityPlayer/2017.1.0f3 (UnityWebRequest/1.0, libcurl/7.51.0-DEV)
+Accept: */*
+Accept-Encoding: identity
+Connection: Keep-Alive
+Authorization: Token 72b0fd3ba387f56f98bee8889d8c621e838df63b
+Content-Type: application/x-www-form-urlencoded
+X-Unity-Version: 2017.1.0f3
+    </pre>
+</figure>
+<h4>Response</h4>
+<figure class="highlight">
+    <pre>
+HTTP/1.0 200 OK
+Date: Wed, 27 Dec 2017 08:04:32 GMT
+Server: WSGIServer/0.2 CPython/3.5.4
+Allow: OPTIONS, GET
+Content-Type: application/json
+Vary: Accept
+X-Frame-Options: SAMEORIGIN
+{"email":"jrjs1996@hotmail.com","first_name":"","last_name":"","balance":"8.00","auth_token":"72b0fd3ba387f56f98bee8889d8c621e838df63b"}
+    </pre>
+</figure>
+

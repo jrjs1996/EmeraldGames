@@ -1,0 +1,24 @@
+
+<h2>States</h2>
+
+<h3>Registering</h3>
+
+<p>This is the initial state of the match. While a match is in this state player groups can be created and players
+    can be added to groups. All of the setup for the match is done in this state.</p>
+
+<h3>Active</h3>
+
+<p>The match is in this state while it is being played. No player groups can be created and no players can join or leave
+    the match in this state. A match can only enter this state if it is in the registering state.</p>
+
+<h3>Finished</h3>
+
+<p>This is the state of a match that has been successfully completed. When a match enters this state all of the players
+    in the winning player group receive the money in the pool. (The money is divided evenly between all of the players
+    in the group). A match can only enter this state if it is in the active state.</p>
+
+<h3>Aborted</h3>
+
+<p>A match should only enter this state if an unexpected error occurs in the game. When a match enters this state all
+    wagers are returned to the users from the pot. A match can enter this state from the registering or active
+    states.</p>

@@ -1,0 +1,22 @@
+<div class="container-fluid">
+<h1>{{ game.name }} <small style="color: #0f0f0f">Key: {{ game.key }}</small></h1>
+    <div>
+        <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+        <div class="col-md-6">
+            <h2>Total Matches: {{ game.sandboxmatch_set.count }}</h2>
+            <div class="col-md-12">
+                <h3>Registering Matches: {{ registering_matches_count }}</h3>
+                <h3>Active Matches: {{ active_matches_count }}</h3>
+                <h3>Finished Matches: {{ finished_matches_count }}</h3>
+                <h3>Aborted Matches: {{ aborted_matches_count }}</h3>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <h2>Match Types: {{ game.sandboxmatchtype_set.count }}</h2>
+            <h2>Max Match Length: {{ game.max_match_length }} min</h2>
+            <h2>Players: {{ game.sandboxplayer_set.count }}</h2>
+        </div>
+    </div>
+</div>
+

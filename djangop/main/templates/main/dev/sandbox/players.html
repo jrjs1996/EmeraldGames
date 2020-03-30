@@ -1,0 +1,153 @@
+<script>
+        // When the new player button is clicked
+        $("#addPlayer").click( function () {
+            $.post("players/", { name: $("#name").val(),
+                balance: $("#balance").val(),
+                csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val() }).done(
+                function (result) {
+                    $("#content").html(result.toString());
+                }
+            )
+        });
+
+        function decimalInput(input) {
+            var v = parseFloat(input.value);
+            if (isNaN(v)) {
+                input.value = '';
+            } else {
+                input.value = v.toFixed(2);
+            }
+        }
+
+        // Only allow two decimal places in the balance textbox
+        $("#balance").change(function () {
+            decimalInput(this);
+        });
+
+        $("#allBalances").change(function () {
+            decimalInput(this);
+        });
+
+        // When the edit button is clicked
+        function editButtonClicked(button) {
+            if ($("#changename").length) {
+                $("#errorMessage").text("Only one player can be changed at a time.");
+                return;
+            }
+            {# Change the name field to a textbox #}
+            $("#name"+button.id).html('<input id="changename" class="form-control" value="'
+                +$("#name"+button.id).html()+'">');
+            {# Change the password field to a textbox #}
+            $("#password"+button.id).html('<input id="changepassword" class="form-control" value="'
+                +$("#password"+button.id).html()+'">');
+            {# Change the balance field to a textbox #}
+            $("#balance"+button.id).html('<input id="changebalance" class="form-control" value="'
+                +$("#balance"+button.id).html()+'">');
+            $("#changebalance").change( function() {
+                decimalInput(this);
+            });
+
+            {# Add a delete button #}
+            $("#buttons"+button.id).append('  <button class="btn btn-info editButton" id="delete'+button.id+'" style="background-color: #ff1513; border-color: #ff1513">Delete</button>');
+            $('#delete'+button.id).click( function() {
+                $.post("players/", {
+                    id: button.id,
+                    delete: 'yes',
+                    csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val() }).done(
+                        function(result) {
+                            $("#content").html(result.toString());
+                        })
+            });
+
+            {# Change this buttons text #}
+            $(button).text("Save");
+            {# When the save button is clicked #}
+            $(button).off('click').click( function() {
+                $.post("players/", {
+                    id: button.id,
+                    name: $("#changename").val(),
+                    balance: $("#changebalance").val(),
+                    password: $("#changepassword").val(),
+                    csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val() }).done(
+                        function(result) {
+                            $("#content").html(result.toString());
+                        })
+            })
+        }
+
+
+        $(".editButton").click(function() {
+            editButtonClicked(this);
+        });
+
+        $("#resetBalances").click(function () {
+            $.post("players/", {
+                all: 'yes',
+                amount: $("#allBalances").val(),
+                csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()}).done(
+                    function (result) {
+                        $("#content").html(result.toString());
+                    })
+        });
+
+
+        // When the edit button is clicked for a
+
+</script>
+{% if players.count == 0 %}
+    <br>
+    <h3 style="color: red">You haven't added any sandbox players for this game yet. Add some players to start testing your game!</h3>
+    <br>
+    <br>
+{% else %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Password</th>
+            <th>Balance</th>
+            <th>Date created</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for player in players.all %}
+            <tr>
+                <td id="name{{ player.id }}">{{ player.name }}</td>
+                <td id="password{{ player.id }}">{{ player.password }}</td>
+                <td id="balance{{ player.id }}">{{ player.balance }}</td>
+                <td>{{ player.date_created }}</td>
+                <td id="buttons{{ player.id }}"><button class="btn btn-info editButton" id="{{ player.id }}">Edit</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+<p style="color: red" id="errorMessage"></p>
+<div class="row">
+        {% csrf_token %}
+        <div class="col-md-2">
+            <input class="btn btn-info" value="Add Player" id="addPlayer" type="submit">
+        </div>
+        <div class="col-md-4 col-xs-12 span6" style="padding-bottom: 5px">
+            <label for="name">Name: </label>
+            <input name="name" id="name" class="form-control">
+        </div>
+        <div class="col-md-4 col-xs-12 span6">
+            <label for="balance">Balance: $</label>
+            <input name="balance" id="balance" class="form-control">
+        </div>
+</div>
+<br>
+{% if players.count != 0 %}
+<div class="row">
+    <div class="col-md-2">
+            <input class="btn btn-info" value="Set All Balances" id="resetBalances" type="submit" style="background-color: #ff1513; border-color: #ff1513">
+        </div>
+        <div class="col-md-4 span6" >
+            <label for="allBalances">Amount: $</label>
+            <input name="name" id="allBalances" class="form-control">
+        </div>
+        <div class="col-md-4 span6">
+        </div>
+</div>
+{% endif %}

@@ -1,0 +1,10 @@
+{% extends 'main/header.html' %}
+{% block content %}
+    <h1>Deposit Made</h1>
+    <h3>Current Balance: {{ user.balance }}</h3>
+    <h3>Deposit Amount: {{ amount }}</h3>
+
+    {% if serverId != None %}
+        <a href="login/{{ serverId }}/" class="btn btn-default">Return</a>
+    {% endif %}
+{% endblock %}

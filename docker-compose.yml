@@ -13,7 +13,7 @@ services:
 
   djangop:
     build:
-      context: ./
+      context: ./djangop/
       dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     container_name: djangop
@@ -25,7 +25,7 @@ services:
     - "8000:8000"
     restart: on-failure
     volumes:
-    - "F:\\projects\\Django\\djangop:/app/"
+    - "F:\\projects\\Django\\Emerald\\djangop:/app/"
 
   djangop-migrate:
     command: python manage.py migrate

@@ -1,3 +1,0 @@
-These are folders that should be copied to locations in docker images.
-
-channels_presence is a modified version of the python package to use with djangop

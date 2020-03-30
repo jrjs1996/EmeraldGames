@@ -15,7 +15,7 @@ services:
     build:
       context: ./djangop/
       dockerfile: Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python /app/manage.py runserver 0.0.0.0:8000
     container_name: djangop
     depends_on:
       - db
@@ -25,7 +25,7 @@ services:
     - "8000:8000"
     restart: on-failure
     volumes:
-    - "F:\\projects\\Django\\Emerald\\djangop:/app/"
+    - "F:\\projects\\Emerald\\djangop:/app/"
 
   djangop-migrate:
     command: python manage.py migrate
@@ -52,6 +52,18 @@ services:
       - redis
 
     image: djangop
+    restart: on-failure
+  
+  gotcp:
+    build:
+      context: ./gotcp/
+      dockerfile: Dockerfile
+    command: /dist/main 8887
+    depends_on: 
+      - db
+    image: gotcp
+    ports: 
+    - "8887:8887"
     restart: on-failure
 
   redis:

@@ -27,7 +27,7 @@ django-celery-beat==1.6.0
 django-channels-presence==0.0.9
 django-restframework==0.0.1
 django-timezone-field==4.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 djangorestframework-expiring-authtoken==0.1.4
 gast==0.2.2
 gevent==1.4.0
